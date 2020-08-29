@@ -1,0 +1,54 @@
+---
+title: "Adapting BTM to Stan"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Adapting-BTM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Adapting BTM to Stan
+
+## Biterm Topic Model
+
+In the Biterm Topic Model paper, Yan et al define the biterm generating 
+process is described as:
+
+1. Sample topic simplex $\theta \sim \mathrm{Dirichlet}(\alpha)$.
+2. For each topic $k$ sample $\phi_k \sim \mathrm{Dirichlet}(\beta)$.
+3. 
+
+## Marginals
+
+For more info on this topic, see the 
+(Latent Dirichlet Allocation)[https://mc-stan.org/docs/2_18/stan-users-guide/latent-dirichlet-allocation.html] 
+section on Stan User's Guide.
+
+We can calculate the marginal distribution over the continuous parameters 
+$\theta, \phi$ by summing out the discrete parameters:
+
+$$\begin{aligned}
+p(\theta, \phi | \alpha, \beta, b) 
+&\propto p(\theta | \alpha)p(\phi | \beta)p(b | \theta, \phi) \\
+&= p(\theta | \alpha) \prod_k p(\phi_k | \beta) \prod_{(i,j)}p(w_i, w_j | \theta, \phi) \\ 
+&= p(\theta | \alpha) \prod_k p(\phi_k | \beta) \prod_{(i,j)} \sum_z p(z, w_i, w_j | \theta, \phi) \\
+&= p(\theta | \alpha) \prod_k p(\phi_k | \beta) \prod_{(i,j)} \sum_z p(z | \theta) p(w_i | \phi_z) p(w_j | \phi_z) \\
+\end{aligned}$$
+
+$$\begin{aligned}
+\log p(\theta, \phi | \alpha, \beta, b) 
+&\propto \log p(\theta | \alpha) + \sum_k \log p(\phi_k | \beta) + \sum_{(i,j)} \log \Big(\sum_z p(z | \theta) p(w_i | \phi_z) p(w_j | \phi_z)\Big) \\
+&\propto 
+\log \mathrm{Dirichlet}(\theta | \alpha) +
+\sum_k \log \mathrm{Dirichlet}(\phi_k | \beta) + 
+\sum_{(i,j)} \log \Big(
+\sum_z \mathrm{Categorical}(z | \theta) 
+\mathrm{Categorical}(w_i | \phi_z) \mathrm{Categorical}(w_j | \phi_z)
+\Big) \\
+\end{aligned}$$
+
+## Stan implementation
+
+```{stan output.var='btm', code=readLines('../inst/stan/btm.stan'), eval = F}
+```
+

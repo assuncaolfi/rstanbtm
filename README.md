@@ -1,7 +1,3 @@
----
-output: github_document
----
-
 
 
 # rstanbtm
@@ -17,8 +13,6 @@ You can install rstanbtm with:
 
 ```r
 remotes::install_github('https://github.com/assuncaolfi/rstanbtm')
-#> Skipping install of 'rstanbtm' from a github remote, the SHA1 (822b0249) has not changed since last install.
-#>   Use `force = TRUE` to force installation
 ```
 
 ## Example
