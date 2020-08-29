@@ -2,14 +2,7 @@
 output: github_document
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
+
 
 # rstanbtm
 
@@ -21,8 +14,11 @@ with R and Stan.
 
 You can install rstanbtm with:
 
-```{r installation}
+
+```r
 remotes::install_github('https://github.com/assuncaolfi/rstanbtm')
+#> Skipping install of 'rstanbtm' from a github remote, the SHA1 (822b0249) has not changed since last install.
+#>   Use `force = TRUE` to force installation
 ```
 
 ## Example
@@ -32,7 +28,8 @@ excellent [BTM](https://github.com/bnosac/BTM) package,
 using rstanbtm functions for biterm construction and 
 model fitting instead.
 
-```{r example, eval = FALSE}
+
+```r
 library(rstanbtm)
 library(data.table)
 library(parallel)
